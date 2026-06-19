@@ -1,0 +1,27 @@
+body{
+    margin:0;
+    background:#111;
+    color:#eee;
+    font-family:sans-serif;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    height:100vh;
+}
+
+.container{
+    text-align:center;
+}
+
+button{
+    font-size:18px;
+    padding:12px 24px;
+    cursor:pointer;
+}
+
+#status{
+    margin-top:20px;
+    color:#aaa;
+}
