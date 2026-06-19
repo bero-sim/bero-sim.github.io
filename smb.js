@@ -46,38 +46,28 @@ playBtn.addEventListener(
   "click",
   async () => {
 
-    try {
+        await Tone.start();
 
-      console.log("button clicked");
+        const synth =
+          new Tone.PolySynth(
+            Tone.Synth
+          ).toDestination();
 
-      const midiUrl =
-        await findMidiFile(gistId);
+        for (const track of midi.tracks) {
 
-      console.log("midiUrl =", midiUrl);
+          for (const note of track.notes) {
 
-      const midiBuffer =
-        await fetch(midiUrl)
-          .then(r => r.arrayBuffer());
+            synth.triggerAttackRelease(
+              note.name,
+              note.duration,
+              Tone.now() + note.time,
+              note.velocity
+            );
 
-      console.log(
-        "midi size =",
-        midiBuffer.byteLength
-      );
+          }
 
-      const midi =
-        new Midi(midiBuffer);
-
-      console.log(midi);
-
-    } catch(e) {
-
-      console.error(e);
-
-    }
-
-  }
-);
-
+        }
+      
 ok_playBtn.addEventListener(
     "click",
     async () => {
