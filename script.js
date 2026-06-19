@@ -5,14 +5,8 @@
 const LOGO_TEXT = "@bero_sim"; // ウインドウ末尾に付く文字
 
 const MENU_DATA = [
-    { name: "ﾎｰﾑ", url: "#home", title: "駅伝データ可視化動画伝承プロジェクト" },
-    { 
-        name: "統合", url: null, // 親メニューで遷移なし
-        children: [
-            { name: "統合年表", url: "https://gist.github.com/bero-sim/4e6a3e968b29dfe388aae176e036b6e5", title: "統合歴史年表" },
-
-        ]
-    },
+    { name: "ホーム", url: "#home", title: "駅伝データ可視化動画伝承プロジェクト" },
+    { name: "統合", url: "https://gist.github.com/bero-sim/4e6a3e968b29dfe388aae176e036b6e5", title: "統合歴史年表" },
     { 
         name: "地区", url: null, // 親メニューで遷移なし
         children: [
@@ -79,13 +73,13 @@ const MENU_DATA = [
         name: "SNS", url: null, // 親メニューで遷移なし
         children: [
             { name: "GitHub", url: "https://bero-sim.github.io/", title: "外部URL" }, // 別タブ送り
-            { name: "Youtubeﾁｬﾝﾈﾙ", url: "https://www.youtube.com/@bero-sim", title: "外部URL" }, // 別タブ送り
             { name: "X(旧Twitter)", url: "https://x.com/bero_sim", title: "外部URL" }, // 別タブ送り
             { name: "tumblr-blog", url: "https://www.tumblr.com/bero-sim/", title: "外部URL" }, // 別タブ送り
             { name: "note", url: "https://note.com/bero_sim", title: "外部URL" }, // 別タブ送り
             { name: "instagram", url: "https://www.instagram.com/bero.sim/", title: "外部URL" }, // 別タブ送り
         ]
-    }
+    },
+    { name: "▶️YC", url: "https://www.youtube.com/@bero-sim", title: "外部URL" } // 別タブ送り
 ];
 
 // ========================================================
@@ -126,7 +120,7 @@ function createMenuItem(item, isMobile) {
         });
     }
 
-    // 子階層（ドロップダウン）がある場合
+    // PC向け：子階層（ドロップダウン）がある場合
     if (item.children && !isMobile) {
         const dropdown = document.createElement('div');
         dropdown.className = 'dropdown-content';
@@ -135,14 +129,27 @@ function createMenuItem(item, isMobile) {
             dropdown.appendChild(childEl);
         });
         div.appendChild(dropdown);
-    } else if (item.children && isMobile) {
-        // スマホ時は階層を平坦化して追加
-        item.children.forEach(child => {
-            const childEl = createMenuItem(child, true);
-            childEl.style.paddingLeft = "45px";
-            childEl.innerText = `└ ${child.name}`;
-            document.getElementById('mobileMenu').appendChild(childEl);
-        });
+    } 
+    // スマホ向け：子階層がある場合（親を表示した上で、その直後に正順で子要素を展開する）
+    else if (item.children && isMobile) {
+        if (!item.url) {
+            div.style.cursor = "default";
+            div.style.fontWeight = "bold";
+            div.style.color = "#888888";
+        }
+
+        // 展開タイミングを保証しつつ、逆順ループで差し込むことで画面上の表示を「正順」にする
+        setTimeout(() => {
+            // slice() で元の配列を破壊せずにコピーし、reverse() で逆順にしてから挿入
+            item.children.slice().reverse().forEach(child => {
+                const childEl = createMenuItem(child, true);
+                childEl.style.paddingLeft = "40px";
+                childEl.innerText = `└ ${child.name}`;
+                
+                // 親要素（div）のすぐ後ろに順次挿入
+                div.insertAdjacentElement('afterend', childEl);
+            });
+        }, 0);
     }
 
     return div;
@@ -175,24 +182,33 @@ function handleMenuClick(item) {
 // ========================================================
 function router() {
     // URLの末尾（#以降）を取得してデコード
-    const hash = decodeURIComponent(window.location.hash.replace('#', ''));
+    let hash = decodeURIComponent(window.location.hash.replace('#', ''));
     const contentBody = document.getElementById('contentBody');
     
-    // 全メニューから現在のハッシュ（メニュー名）に合致する要素を探索
+    // 全メニューから現在のハッシュ（メニュー名またはURLの#以降）に合致する要素を探索
     let currentItem = null;
     const findItem = (items) => {
         for (let item of items) {
-            if (item.name === hash) { currentItem = item; break; }
+            if (item.name === hash || (item.url && item.url.replace('#', '') === hash)) { 
+                currentItem = item; 
+                break; 
+            }
             if (item.children) findItem(item.children);
         }
     };
     findItem(MENU_DATA);
 
-    // デフォルト（ホームまたはハッシュ空欄時）の処理
-    if (!hash || !currentItem) {
-        contentBody.innerHTML = "<h2>駅伝データ可視化動画伝承プロジェクトへようこそ</h2><p>メニューから駅伝大会を選択してください。</p>";
+    // ★【最優先】デフォルト（ハッシュが空、または「ホーム」が選ばれた場合）の初期画面処理
+    if (!hash || hash === 'home' || (currentItem && currentItem.url === '#home')) {
+        contentBody.innerHTML = "<h2>終わりなき駅伝データ伝承プロジェクトへようこそ</h2><p>メニューから大会を選択してください。</p>";
         document.title = `ホーム | ${LOGO_TEXT}`;
-        updateActiveMenu('');
+        updateActiveMenu('ホーム'); // 「ホーム」ボタンを青くアクティブにする
+        return; // ここで処理を終了させて、下の「近日公開予定」に行かせない
+    }
+
+    // 現在のメニューが見つからない場合の安全弁
+    if (!currentItem) {
+        contentBody.innerHTML = "<h2>404 Not Found</h2><p>ページが見つかりません。</p>";
         return;
     }
 
@@ -202,20 +218,17 @@ function router() {
 
     // コンテンツの描画分岐
     if (currentItem.url.startsWith('#')) {
-        // 「近日公開予定」の表示
+        // 「近日公開予定」の表示（#home 以外のページ内リンク）
         contentBody.innerHTML = `<div class="coming-soon">近日公開予定</div>`;
     } else if (currentItem.url.includes('gist.github.com')) {
-        // Gistをiframe等を使わず、美しく動的にインライン表示
+        // Gistを動的にインライン表示
         contentBody.innerHTML = `<p style="color:#888;">Gistデータを読み込み中...</p>`;
         
-        // Gist IDを抽出
         const matches = currentItem.url.match(/gist\.github\.com\/[^\/]+\/([a-f0-9]+)/);
         if (matches && matches[1]) {
             const gistId = matches[1];
-            // JSONPを利用してGistのHTML/CSSデータを安全に取得・展開
             const callbackName = `gist_callback_${gistId}`;
             window[callbackName] = function(gistData) {
-                // Gistの専用スタイルシートを適用
                 if (!document.getElementById(`gist-css-${gistId}`)) {
                     const link = document.createElement('link');
                     link.id = `gist-css-${gistId}`;
@@ -239,6 +252,7 @@ function router() {
 // アクティブなメニューボタンの色（青）を更新する処理
 function updateActiveMenu(name) {
     document.querySelectorAll('.menu-item').forEach(el => {
+        // メニューの dataset.name と一致するか、親メニューの名前の一部に含まれるかで判定
         if (el.dataset.name === name) {
             el.classList.add('active');
         } else {
