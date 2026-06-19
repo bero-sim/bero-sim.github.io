@@ -42,7 +42,27 @@ async function findMidiFile(gistId) {
     throw new Error("MIDI file not found");
 }
 
-playBtn.addEventListener("click", async () => {
+playBtn.addEventListener(
+    "click",
+    async () => {
+
+        await Tone.start();
+
+        const synth =
+            new Tone.PolySynth(
+                Tone.Synth
+            ).toDestination();
+
+        synth.triggerAttackRelease(
+            "C4",
+            "8n"
+        );
+
+        console.log("tone test");
+    }
+);
+
+xplayBtn.addEventListener("click", async () => {
 
     try {
 
