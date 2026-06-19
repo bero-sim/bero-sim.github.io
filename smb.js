@@ -116,6 +116,8 @@ async function playMidi(midi){
             track.instrument.number || 0;
 
         promises.push(
+            console.log("program", program); //test
+            console.log("url", url);         //test
             loadPreset(program)
         );
     }
@@ -171,7 +173,9 @@ playBtn.addEventListener(
 
             const midi =
                 new Midi(midiBuffer);
-
+            console.log(midi);          // test
+            console.log(midi.tracks);   // test
+            
             await audioContext.resume();
 
             status.textContent =
