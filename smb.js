@@ -42,31 +42,40 @@ async function findMidiFile(gistId) {
     throw new Error("MIDI file not found");
 }
 
-playBtn.addEventListener(
-  "click",
-  async () => {
+playBtn.addEventListener("click", async () => {
 
-        await Tone.start();
+  await Tone.start(); // ← 最初に必ず
 
-        const synth =
-          new Tone.PolySynth(
-            Tone.Synth
-          ).toDestination();
+  console.log("audio unlocked");
 
-        for (const track of midi.tracks) {
+  const synth =
+    new Tone.PolySynth(Tone.Synth)
+      .toDestination();
 
-          for (const note of track.notes) {
+  const midiBuffer =
+    await fetch(midiUrl)
+      .then(r => r.arrayBuffer());
 
-            synth.triggerAttackRelease(
-              note.name,
-              note.duration,
-              Tone.now() + note.time,
-              note.velocity
-            );
+  const midi = new Midi(midiBuffer);
 
-          }
+  const now = Tone.now();
 
-        }
+  midi.tracks.forEach(track => {
+
+    track.notes.forEach(note => {
+
+      synth.triggerAttackRelease(
+        note.name,
+        note.duration,
+        now + note.time,
+        note.velocity
+      );
+
+    });
+
+  });
+
+});
       
 ok_playBtn.addEventListener(
     "click",
