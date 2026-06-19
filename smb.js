@@ -43,6 +43,42 @@ async function findMidiFile(gistId) {
 }
 
 playBtn.addEventListener(
+  "click",
+  async () => {
+
+    try {
+
+      console.log("button clicked");
+
+      const midiUrl =
+        await findMidiFile(gistId);
+
+      console.log("midiUrl =", midiUrl);
+
+      const midiBuffer =
+        await fetch(midiUrl)
+          .then(r => r.arrayBuffer());
+
+      console.log(
+        "midi size =",
+        midiBuffer.byteLength
+      );
+
+      const midi =
+        new Midi(midiBuffer);
+
+      console.log(midi);
+
+    } catch(e) {
+
+      console.error(e);
+
+    }
+
+  }
+);
+
+ok_playBtn.addEventListener(
     "click",
     async () => {
 
