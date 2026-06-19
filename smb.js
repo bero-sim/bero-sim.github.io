@@ -1,3 +1,4 @@
+// https://github.com/bero-sim/bero-sim.github.io/blob/main/smb.js
 const params = new URLSearchParams(location.search);
 
 const gistId = params.get("gist");
