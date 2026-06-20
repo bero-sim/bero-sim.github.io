@@ -159,7 +159,7 @@ function stopAllMidiNotes() {
 }
 
 // ========================================================
-// 5. 引数なし：ピンポーン（特製チャイム音）
+// 5. 引数なし：特製サウンド（チャイム or 号砲）のシンセサイズ
 // ========================================================
 function playChime() {
     initAudio();
@@ -167,15 +167,62 @@ function playChime() {
     actionBtn.classList.add('active');
     actionBtn.disabled = true;
 
-    const now = audioCtx.currentTime;
-    
-    createChimeTone(659.25, now, 1.2); // ミ
-    createChimeTone(523.25, now + 0.4, 1.8); // ド
+    // ★ 鳴らしたい音を選べます：号砲なら「playGunshot()」、チャイムなら「playClassicChime()」
+    playGunshot(); 
 
+    // 音が完全に鳴り終わるまでボタンを無効化（1.5秒後に復帰）
     setTimeout(() => {
         actionBtn.classList.remove('active');
         actionBtn.disabled = false;
-    }, 2200);
+    }, 1500);
+}
+
+// ---- 👇 新機能：物理計算による「スタート号砲（ピストル音）」 ----
+function playGunshot() {
+    const now = audioCtx.currentTime;
+
+    // 1. ノイズを生成するためのバッファ（メモリ上の音声データ空間）を作成（0.5秒分）
+    const bufferSize = audioCtx.sampleRate * 0.5;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    
+    // 乱数（-1から1）を敷き詰めて「ホワイトノイズ（生破裂音の元）」を作る
+    for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+    }
+
+    // 2. オーディオノード（回路）の生成
+    const noiseNode = audioCtx.createBufferSource();
+    noiseNode.buffer = buffer;
+
+    const filterNode = audioCtx.createBiquadFilter();
+    const gainNode = audioCtx.createGain();
+
+    // 3. フィルター設定（高音をカットして「ドンッ」という重低音の塊にする）
+    filterNode.type = 'lowpass';
+    filterNode.frequency.setValueAtTime(1000, now); // 発音時は1000Hz（少し高めの破裂音）
+    filterNode.frequency.exponentialRampToValueAtTime(100, now + 0.15); // 一瞬で100Hz（腹に響く重低音）へ変化
+
+    // 4. 音量封筒（エンベロープ）設計：ピストルの爆発的なアタックと残響
+    gainNode.gain.setValueAtTime(0, now);
+    gainNode.gain.linearRampToValueAtTime(0.8, now + 0.002); // 0.002秒でマックス（爆発的な鋭さ）
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.4); // 0.4秒かけて滑らかに消えていく（余韻）
+
+    // 5. 回路の接続
+    noiseNode.connect(filterNode);
+    filterNode.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    // 6. 着火！
+    noiseNode.start(now);
+    noiseNode.stop(now + 0.4);
+}
+
+// ---- 👇 以前成功した「ピンポーン」のチャイム音（いつでも戻せるように保管） ----
+function playClassicChime() {
+    const now = audioCtx.currentTime;
+    createChimeTone(659.25, now, 1.2);    // ミ
+    createChimeTone(523.25, now + 0.4, 1.8); // ド
 }
 
 function createChimeTone(freq, startTime, duration) {
