@@ -1,28 +1,81 @@
 /* https://github.com/bero-sim/bero-sim.github.io/blob/main/smb.css */
-body{
-    margin:0;
-    background:#111;
-    color:#eee;
-    font-family:sans-serif;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    height:100vh;
+/* 全体初期化 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-color: #000000;
+    color: #ffffff;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.container{
-    text-align:center;
+/* センター配置用のコンテナ */
+.music-box-container {
+    text-align: center;
+    padding: 40px;
+    border: 1px solid #222222;
+    background-color: #0b0b0b;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    max-width: 400px;
+    width: 90%;
 }
 
-button{
-    font-size:18px;
-    padding:12px 24px;
-    cursor:pointer;
+/* タイトルスタイル */
+.title {
+    font-size: 2rem;
+    font-weight: 300;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    color: #ffffff;
 }
 
-#status{
-    margin-top:20px;
-    color:#aaa;
+/* ステータステキスト */
+.status {
+    font-size: 0.9rem;
+    color: #888888;
+    margin-bottom: 40px;
+    min-height: 20px;
+}
+
+/* 再生ボタン（通常時） */
+.play-btn {
+    background-color: transparent;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    outline: none;
+    width: 100%;
+}
+
+/* 再生ボタン：マウスオーバー */
+.play-btn:hover:not(:disabled) {
+    background-color: #333333;
+    border-color: #aaaaaa;
+}
+
+/* 再生ボタン：アクティブ（演奏中など） */
+.play-btn.active {
+    color: #007bff;
+    border-color: #007bff;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+}
+
+/* ローディング・無効化状態 */
+.play-btn:disabled {
+    border-color: #444444;
+    color: #444444;
+    cursor: not-allowed;
 }
