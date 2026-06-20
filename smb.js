@@ -79,29 +79,29 @@ function initAudio() {
 
 // 音色オブジェクトを100%自動検出してキャッチする関数
 function getPianoPreset() {
-    // まず定義済みの候補をチェック
-    let preset = window._tone_0000_AcousticGrandPiano_SF2_file || 
-                 window._tone_0000_J_Acoustic_Grand_Piano_SF2_file || 
-                 window._tone_AcousticGrandPiano_SF2_file;
+    // 読み込まれた外部JSの関数オブジェクトをダイレクトに掴み取る
+    const presetFunc = window._tone_0000_AcousticGrandPiano_SF2_file || 
+                       window._tone_0000_J_Acoustic_Grand_Piano_SF2_file ||
+                       window._tone_AcousticGrandPiano_SF2_file;
     
-    if (preset) return preset;
-
-    // もし見つからなければ、ブラウザのメモリ(window)全体から
-    // WebAudioFontの音色データ（_tone_ から始まるオブジェクト）を根こそぎ自動捜索
-    for (let key in window) {
-        if (key.startsWith('_tone_') && window[key] && typeof window[key] === 'object') {
-            console.log("音色オブジェクトを自動検知しました:", key);
-            return window[key];
-        }
+    // 関数が存在する場合、WebAudioFontPlayerが解釈できる「zone」構造に変換して返す
+    if (typeof presetFunc === 'function') {
+        return presetFunc;
+    }
+    // もし関数ではなく、すでにオブジェクトとして展開されている場合のフォールバック
+    if (presetFunc && typeof presetFunc === 'object') {
+        return presetFunc;
     }
     return null;
 }
+
 // ========================================================
 // 4. MIDI再生・停止の制御ロジック
 // ========================================================
 function toggleMidiPlay() {
     initAudio();
 
+    // 外部JSから直接、音色データ（または着火関数）をハント
     const pianoPreset = getPianoPreset();
     if (!pianoPreset) {
         statusMessage.innerText = "エラー: ピアノ音色データの読み込みに失敗しています。";
@@ -131,10 +131,11 @@ function toggleMidiPlay() {
                 const noteOnTime = startTime + note.time;
                 const duration = note.duration;
                 
+                // WebAudioFontPlayerのqueueWaveTableは、関数型のプレセットも自動で内部デコードして演奏してくれます
                 let envelope = player.queueWaveTable(
                     audioCtx, 
                     audioCtx.destination, 
-                    pianoPreset, 
+                    pianoPreset, // 掴み取ったプレセット（関数またはオブジェクト）を直接投入
                     noteOnTime, 
                     note.midi, 
                     duration, 
