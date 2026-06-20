@@ -10,8 +10,8 @@ let scheduledNotes = []; // 停止用に予約された音符のリスト
 let isPlaying = false;
 let startTime = 0;
 
-// WebAudioFontの楽器データ（グランドピアノ: 0000_J_Acoustic_Grand_Piano_SF2_file）
-const pianoPreset = _tone_0000_J_Acoustic_Grand_Piano_SF2_file;
+// WebAudioFontの楽器データ（グランドピアノ）
+const pianoPreset = _tone_0000_AcousticGrandPiano_SF2_file;
 
 // URLから引数（?gist=xxx）を抽出
 const urlParams = new URLSearchParams(window.location.search);
