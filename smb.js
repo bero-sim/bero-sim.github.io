@@ -38,8 +38,8 @@ window.addEventListener('DOMContentLoaded', async () => {
             statusMessage.innerText = "指定されたGistにMIDIファイルが見つかりません。";
         }
     } else {
-        statusMessage.innerText = "ウェルカムチャイムモード";
-        actionBtn.innerText = "♪ チャイム再生";
+        statusMessage.innerText = "ウェルカム スタート号砲 モード";
+        actionBtn.innerText = "♪ スタート号砲💥再生";
         actionBtn.disabled = false;
         actionBtn.addEventListener('click', playChime);
     }
