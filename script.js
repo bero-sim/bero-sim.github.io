@@ -6,7 +6,12 @@ const LOGO_TEXT = "@bero_sim"; // ウインドウ末尾に付く文字
 
 const MENU_DATA = [
     { name: "ホーム", url: "#home", title: "駅伝データ可視化動画伝承プロジェクト" },
-    { name: "号砲", url: "smb.html", title: "外部URL" }, // 別タブ送り
+    { 
+        name: "💥", url: null, // 親メニューで遷移なし
+        children: [
+            { name: "号砲", url: "smb.html", title: "外部URL" }, // 別タブ送り
+        ]
+    },
     { name: "統合", url: "https://gist.github.com/bero-sim/4e6a3e968b29dfe388aae176e036b6e5", title: "統合歴史年表" },
     { 
         name: "地区", url: null, // 親メニューで遷移なし
