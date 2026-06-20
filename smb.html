@@ -2,36 +2,24 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Special Music Box</title>
-
-<link rel="stylesheet" href="smb.css">
-
-<script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tonejs/midi@2.0.28/build/Midi.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Music Box</title>
+    <link rel="stylesheet" href="smb.css">
+    <script src="https://unpkg.com/@tonejs/midi"></script>
+    <script src="https://surikov.github.io/webaudiofont/npm/dist/WebAudioFontPlayer.js"></script>
+    <script src="https://surikov.github.io/webaudiofontdata/sound/0000_J_Acoustic_Grand_Piano_SF2_file.js"></script>
 </head>
-
 <body>
 
-<div class="container">
+    <div class="music-box-container">
+        <h1 class="title">Special Music Box</h1>
+        
+        <p id="statusMessage" class="status">音源をロード中...</p>
 
-    <h1>Special Music Box</h1>
-
-    <div id="unknown">
-        Gist ID unknown
+        <button id="actionBtn" class="play-btn" disabled>⌛ ロード中</button>
     </div>
 
-    <button id="playBtn" hidden>
-        🎵 特典楽曲を再生
-    </button>
-
-    <div id="status"></div>
-
-</div>
-
-<script src="smb.js"></script>
-
+    <script src="smb.js"></script>
 </body>
 </html>
