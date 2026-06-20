@@ -2,7 +2,6 @@
 // ========================================================
 // 1. グローバル設定と初期化
 // ========================================================
-const GITHUB_USER = "bero-sim"; // あなたのGitHubユーザー名
 let audioCtx = null;
 let player = new WebAudioFontPlayer();
 let currentMidiData = null;
@@ -67,33 +66,33 @@ async function fetchMidiUrlFromGist(id) {
 }
 
 // ========================================================
-// 3. MIDI再生・停止の制御ロジック
+// 3. Web Audio API 初期化・再開制御（ player.init を廃止）
 // ========================================================
 function initAudio() {
     if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        player.init(audioCtx);
     }
     if (audioCtx.state === 'suspended') {
         audioCtx.resume();
     }
 }
 
-// 動的に展開された音色オブジェクトを安全に取得する関数
+// 音色オブジェクトを安全にキャッチする関数
 function getPianoPreset() {
-    // 展開されうる複数の変数名候補から、実際に存在するものを安全に自動検知して返す
     return window._tone_0000_AcousticGrandPiano_SF2_file || 
            window._tone_0000_J_Acoustic_Grand_Piano_SF2_file || 
            window._tone_AcousticGrandPiano_SF2_file;
 }
 
+// ========================================================
+// 4. MIDI再生・停止の制御ロジック
+// ========================================================
 function toggleMidiPlay() {
     initAudio();
 
-    // ボタンが押されたこの瞬間に、ロード済みのプレセットを安全に取得
     const pianoPreset = getPianoPreset();
     if (!pianoPreset) {
-        statusMessage.innerText = "エラー: グランドピアノ音色データの読み込みに失敗しています。";
+        statusMessage.innerText = "エラー: ピアノ音色データの読み込みに失敗しています。";
         return;
     }
 
@@ -137,7 +136,7 @@ function toggleMidiPlay() {
 }
 
 // ========================================================
-// 4. 引数なし：ピンポーン（特製チャイム音）のシンセサイズ
+// 5. 引数なし：ピンポーン（特製チャイム音）のシンセサイズ
 // ========================================================
 function playChime() {
     initAudio();
@@ -147,8 +146,8 @@ function playChime() {
 
     const now = audioCtx.currentTime;
     
-    createChimeTone(659.25, now, 1.2);
-    createChimeTone(523.25, now + 0.4, 1.8);
+    createChimeTone(659.25, now, 1.2); // ミ
+    createChimeTone(523.25, now + 0.4, 1.8); // ド
 
     setTimeout(() => {
         actionBtn.classList.remove('active');
