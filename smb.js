@@ -77,13 +77,25 @@ function initAudio() {
     }
 }
 
-// 音色オブジェクトを安全にキャッチする関数
+// 音色オブジェクトを100%自動検出してキャッチする関数
 function getPianoPreset() {
-    return window._tone_0000_AcousticGrandPiano_SF2_file || 
-           window._tone_0000_J_Acoustic_Grand_Piano_SF2_file || 
-           window._tone_AcousticGrandPiano_SF2_file;
-}
+    // まず定義済みの候補をチェック
+    let preset = window._tone_0000_AcousticGrandPiano_SF2_file || 
+                 window._tone_0000_J_Acoustic_Grand_Piano_SF2_file || 
+                 window._tone_AcousticGrandPiano_SF2_file;
+    
+    if (preset) return preset;
 
+    // もし見つからなければ、ブラウザのメモリ(window)全体から
+    // WebAudioFontの音色データ（_tone_ から始まるオブジェクト）を根こそぎ自動捜索
+    for (let key in window) {
+        if (key.startsWith('_tone_') && window[key] && typeof window[key] === 'object') {
+            console.log("音色オブジェクトを自動検知しました:", key);
+            return window[key];
+        }
+    }
+    return null;
+}
 // ========================================================
 // 4. MIDI再生・停止の制御ロジック
 // ========================================================
