@@ -1,4 +1,4 @@
-<!-- https://github.com/bero-sim/bero-sim.github.io/blob/main/smb.html v0.00 -->
+<!-- https://github.com/bero-sim/bero-sim.github.io/blob/main/smb.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -8,15 +8,14 @@
     <link rel="stylesheet" href="smb.css">
     <script src="https://unpkg.com/@tonejs/midi"></script>
     <script src="https://surikov.github.io/webaudiofont/npm/dist/WebAudioFontPlayer.js"></script>
-    <script src="https://surikov.github.io/webaudiofontdata/sound/0000_J_Acoustic_Grand_Piano_SF2_file.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/soundfont-player@0.1.0/build/soundfont-player.min.js"></script>
+    <script src="https://surikov.github.io/webaudiofontdata/sound/0000_AcousticGrandPiano_SF2_file.js"></script>
 </head>
 <body>
 
     <div class="music-box-container">
         <h1 class="title">Special Music Box</h1>
-        
         <p id="statusMessage" class="status">音源をロード中...</p>
-
         <button id="actionBtn" class="play-btn" disabled>⌛ ロード中</button>
     </div>
 
