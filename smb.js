@@ -10,9 +10,6 @@ let scheduledNotes = []; // 停止用に予約された音符のリスト
 let isPlaying = false;
 let startTime = 0;
 
-// WebAudioFontの楽器データ（グランドピアノ）
-const pianoPreset = _tone_0000_AcousticGrandPiano_SF2_file;
-
 // URLから引数（?gist=xxx）を抽出
 const urlParams = new URLSearchParams(window.location.search);
 const gistId = urlParams.get('gist');
@@ -23,7 +20,6 @@ const actionBtn = document.getElementById('actionBtn');
 // 起動時のルーティング
 window.addEventListener('DOMContentLoaded', async () => {
     if (gistId) {
-        // パターンA: 引数あり（GistのMIDIを読み込んで楽曲再生）
         statusMessage.innerText = "Gistから楽曲データを取得中...";
         const midiUrl = await fetchMidiUrlFromGist(gistId);
         
@@ -44,7 +40,6 @@ window.addEventListener('DOMContentLoaded', async () => {
             statusMessage.innerText = "指定されたGistにMIDIファイルが見つかりません。";
         }
     } else {
-        // パターンB: 引数なし（チャイムモード）
         statusMessage.innerText = "ウェルカムチャイムモード";
         actionBtn.innerText = "♪ チャイム再生";
         actionBtn.disabled = false;
@@ -60,10 +55,9 @@ async function fetchMidiUrlFromGist(id) {
         const response = await fetch(`https://api.github.com/gists/${id}`);
         const gistData = await response.json();
         
-        // Gist内のファイル群から、拡張子が .mid のものを探索
         for (let fileName in gistData.files) {
             if (fileName.toLowerCase().endsWith('.mid')) {
-                return gistData.files[fileName].raw_url; // 生データのURLを返す
+                return gistData.files[fileName].raw_url;
             }
         }
     } catch (e) {
@@ -85,8 +79,23 @@ function initAudio() {
     }
 }
 
+// 動的に展開された音色オブジェクトを安全に取得する関数
+function getPianoPreset() {
+    // 展開されうる複数の変数名候補から、実際に存在するものを安全に自動検知して返す
+    return window._tone_0000_AcousticGrandPiano_SF2_file || 
+           window._tone_0000_J_Acoustic_Grand_Piano_SF2_file || 
+           window._tone_AcousticGrandPiano_SF2_file;
+}
+
 function toggleMidiPlay() {
     initAudio();
+
+    // ボタンが押されたこの瞬間に、ロード済みのプレセットを安全に取得
+    const pianoPreset = getPianoPreset();
+    if (!pianoPreset) {
+        statusMessage.innerText = "エラー: グランドピアノ音色データの読み込みに失敗しています。";
+        return;
+    }
 
     if (isPlaying) {
         // 停止処理
@@ -104,15 +113,13 @@ function toggleMidiPlay() {
         statusMessage.innerText = "グランドピアノ音色で再生中...";
         isPlaying = true;
         
-        startTime = audioCtx.currentTime + 0.5; // 少しバッファを持って開始
+        startTime = audioCtx.currentTime + 0.3;
 
-        // 全トラックの全音符をループしてWebAudioFontにスケジュール（予約）する
         currentMidiData.tracks.forEach(track => {
             track.notes.forEach(note => {
                 const noteOnTime = startTime + note.time;
                 const duration = note.duration;
                 
-                // WebAudioFontで音を鳴らすコマンドをWeb Audio APIのタイムラインに予約
                 let envelope = player.queueWaveTable(
                     audioCtx, 
                     audioCtx.destination, 
@@ -123,7 +130,6 @@ function toggleMidiPlay() {
                     note.velocity
                 );
                 
-                // 途中で止めるためにエフェクトオブジェクトを配列に保管
                 scheduledNotes.push(envelope);
             });
         });
@@ -141,33 +147,25 @@ function playChime() {
 
     const now = audioCtx.currentTime;
     
-    // 「ピン」の音（高い音：ミ / E5 = 659.25Hz）
     createChimeTone(659.25, now, 1.2);
-    
-    // 「ポーン」の音（低い音：ド / C5 = 523.25Hz）
-    // 0.4秒遅れて発音
     createChimeTone(523.25, now + 0.4, 1.8);
 
-    // チャイム終了後にボタンを元に戻す
     setTimeout(() => {
         actionBtn.classList.remove('active');
         actionBtn.disabled = false;
     }, 2200);
 }
 
-// 減衰する綺麗な電子音を作るサブ関数
 function createChimeTone(freq, startTime, duration) {
     const osc = audioCtx.createOscillator();
     const gainNode = audioCtx.createGain();
     
-    // サイン波をベースに、少し柔らかい矩形波を混ぜるとお寺の鐘や高級チャイムの響きになります
     osc.type = 'sine'; 
     osc.frequency.setValueAtTime(freq, startTime);
     
-    // ボリュームの封筒（エンベロープ）設計：ピンポーンと綺麗に減衰する
     gainNode.gain.setValueAtTime(0, startTime);
-    gainNode.gain.linearRampToValueAtTime(0.3, startTime + 0.05); // アタック
-    gainNode.gain.exponentialRampToValueAtTime(0.0001, startTime + duration); // ディケイ
+    gainNode.gain.linearRampToValueAtTime(0.3, startTime + 0.05);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
 
     osc.connect(gainNode);
     gainNode.connect(audioCtx.destination);
