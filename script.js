@@ -78,8 +78,9 @@ const MENU_DATA = [
      { 
         name: "SNS", url: null, // 親メニューで遷移なし
         children: [
-            { name: "GitHub", url: "https://bero-sim.github.io/", title: "外部URL" }, // 別タブ送り
             { name: "X(旧Twitter)", url: "https://x.com/bero_sim", title: "外部URL" }, // 別タブ送り
+            { name: "HEXA NFT", url: "https://nft.hexanft.com/users/Wz7wtLBqNHAhoD", title: "外部URL" }, // 別タブ送り
+            { name: "GitHub", url: "https://bero-sim.github.io/", title: "外部URL" }, // 別タブ送り
             { name: "tumblr-blog", url: "https://www.tumblr.com/bero-sim/", title: "外部URL" }, // 別タブ送り
             { name: "note", url: "https://note.com/bero_sim", title: "外部URL" }, // 別タブ送り
             { name: "instagram", url: "https://www.instagram.com/bero.sim/", title: "外部URL" }, // 別タブ送り
