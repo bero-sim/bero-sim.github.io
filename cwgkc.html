@@ -1,0 +1,35 @@
+<!-- https://github.com/bero-sim/bero-sim.github.io/blob/main/cwgkc.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>CW/GK 問題作成ツール</title>
+    <link rel="stylesheet" href="cwgk.css">
+</head>
+<body class="creator-body">
+    <div class="container">
+        <h1>🛠️ Crossword & Gatekeeper Creator</h1>
+        
+        <div class="input-group">
+            <label>正解テキスト入力欄:</label>
+            <textarea id="rawInput" placeholder="Q1【CW6x5[■■たこあげ■■■ま■■■■■ま■■しめなわ■■■■■し■■]https://xxxxxxxxxxx】"></textarea>
+        </div>
+
+        <button id="checkBtn" class="btn">書式チェック & 生成</button>
+
+        <div id="errorOutput" class="error-box hidden"></div>
+
+        <div id="toggleArea" class="toggle-section hidden">
+            <h3>🧩 出題状態の設定（クリックで「？」と「文字」を切り替え）</h3>
+            <div id="gridContainer" class="grid-layout"></div>
+        </div>
+
+        <div class="input-group">
+            <label>確認済み正解テキスト（配布用Base64URL）:</label>
+            <textarea id="finalOutput" readonly placeholder="ここに配布用のBase64URLが出力されます"></textarea>
+            <button id="copyBtn" class="btn btn-secondary hidden">URL用コードをコピー</button>
+        </div>
+    </div>
+    <script src="cwgk.js"></script>
+</body>
+</html>
