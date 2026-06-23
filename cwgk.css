@@ -97,8 +97,32 @@ textarea { height: 100px; }
 /* 固定文字セル */
 .cell-fixed { background-color: #ffffff; color: #000000; user-select: none; }
 /* 入力可能（？だった）セル */
-.cell-input { background-color: #ffe6cc; color: #000000; border: 1px solid #1e4620; font-family: sans-serif; }
-.cell-input:focus { background-color: #fff3e6; outline: 2px solid #007bff; }
+/* 入力可能（？だった）セルの通常状態：背景は薄いオレンジ、文字は黒 */
+.cell-input { 
+    background-color: #ffe6cc !important; 
+    color: #000000 !important; 
+    border: 1px solid #1e4620; 
+    font-family: sans-serif; 
+    caret-color: #000000; /* カーソル色も黒に */
+}
+
+/* クリック（フォーカス）された時：背景は白、文字は黒 */
+.cell-input:focus { 
+    background-color: #ffffff !important; 
+    color: #000000 !important;
+    outline: 2px solid #007bff; 
+}
+
+/* ブラウザの自動入力（予測候補）が発動した時の黄色や黒の勝手な色変化を完全に防止 */
+.cell-input:-webkit-autofill,
+.cell-input:-webkit-autofill:hover, 
+.cell-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #000000 !important;
+    box-shadow: 0 0 0px 1000px #ffe6cc inset !important; /* 通常時 */
+}
+.cell-input:focus:-webkit-autofill {
+    box-shadow: 0 0 0px 1000px #ffffff inset !important; /* フォーカス時 */
+}
 
 /* トグル（作成用）用セル */
 .cell-toggle { cursor: pointer; transition: opacity 0.1s; }
