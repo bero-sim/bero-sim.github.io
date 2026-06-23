@@ -279,12 +279,18 @@ if (document.getElementById('maintenanceMode')) {
 
         const normalizedAns = normalizeText(currentString, 'CW');
         const result = await decryptText(playConfig.cipherText, normalizedAns);
-        
+
         if (result !== null) {
+            // 現在選択されているセルからフォーカスを強制解除（これで候補選択ウィンドウが即座に消滅します）
+            if (document.activeElement) {
+                document.activeElement.blur();
+            }
+            
             showSuccess(result);
+            
             // 全ての入力を固定化
             document.querySelectorAll('.cell-input').forEach(el => el.disabled = true);
-        }
+        }        
     }
 
     // Gatekeeperのリアルタイム答え合わせ
