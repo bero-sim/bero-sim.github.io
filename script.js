@@ -66,6 +66,8 @@ const MENU_DATA = [
             { name: "参考文献", url: "https://gist.github.com/bero-sim/b7917477c81acc6ad2dbdc53421f97b2", title: "参考文献" },
             { name: "🔽その他", url: null, title: null },
             { name: "お名前の削除依頼", url: "https://docs.google.com/forms/d/e/1FAIpQLScucArjtlsNT0F5964tsDaCvhUJQoGwpte1ehuRk4ndzuy-SA/viewform", title: "📱📺🖥️🎴🖼️🔤" },
+            { name: "🔽駅伝基礎知識", url: null, title: null },
+            { name: "🧩CWP", url: "https://bero-sim.github.io/cwgkp.html?6aeF5Lyd5bi46K2Y44Kv44Kk44K644CQQ1cxMXgxNlvilqDilqDilqDilqDilqDilqDvvJ_vvJ_jgbvvvJ_ilqDilqDilqDilqDilqDilqDilqDjgbzilqDilqDilqDilqDvvJ_vvJ_vvJ_jgorvvJ_vvJ_vvJ_ilqDilqDilqDilqDilqDilqDilqDilqDilqDilqDvvJ_ilqDilqDilqDilqDilqDilqDilqDilqDjgZ_vvJ_vvJ_vvJ_vvJ_jg7zilqDilqDilqDvvJ_ilqDvvJ_ilqDilqDilqDilqDilqDilqDilqDvvJ_jgYvvvJ_vvJ_jgo3vvJ_ilqDilqDilqDilqDilqDilqDvvJ_ilqDilqDilqDvvJ_ilqDvvJ_ilqDvvJ_vvJ_ilqDvvJ_ilqDvvJ_vvJ_vvJ_jgZLvvJ_vvJ_vvJ_jgoXilqDjgofilqDilqDilqDjgZLilqDjg7zilqDjgafvvJ_ilqDvvJ_ilqDvvJ_ilqDvvJ_ilqDjgajilqDvvJ_jgZnilqDilqDilqDjg7zilqDvvJ_ilqDilqDilqDilqDvvJ_jgaPvvJ_vvJ_vvJ_vvJ_jg7zjgajilqDilqDilqDilqDilqDilqDilqDjgY_ilqDjgajilqDilqDilqDilqDilqDjgoTvvJ_vvJ_vvJ_vvJ_ilqDilqDilqDilqDilqDilqDilqDilqDilqDjgpPilqDilqDilqDilqDilqDilqBdcDNjS3hrNDJBTEVjek81RGtMOU93Q3hGQmhINTNiM2FvS0EreU4zT1lJeFB6bWo5M0dWTmE3R0Y3Y1k1YTBneHlaRFJrT2MyNXBJRzg4WWhMc0tWWTRFcms0d1BNMTNDQzkwSDhmdzVIeVVaNzZYck85WEUrdEV5K21GY3RVZHVKTWdyZSt3Vm9iRGVIcUo4Qy9IVE1jNkYxb0NmdmtQbXRJZFJzYU1ZN1dSQUJja2hOeURBR2lrM25yZXhhRnZZdFdxMWZvaFVkMU5qdlZIUytPUC9JM2VyT0d4bU1RNFUybXVaTnBGMGM3MDBSeEpZNDVDcVlXTUMwdFpRMEg4cXRBU1NCOUJNcE5Zcnk2d0lQRXRmY0hrSlU1bDhzRmlSTThTRmlOQzlrNkVtb1gzWFMwZE1BUmNZand5NzJ2MjRwS1NQQzJXY3k3aXBoUE9GN0VKejVld1F5SXNZQXVnPeOAkQ", title: "外部URL" }, // 別タブ送り
         ]
     },
      { 
