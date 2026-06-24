@@ -309,7 +309,7 @@ if (document.getElementById('maintenanceMode')) {
     }
 
     function showSuccess(decrypted) {
-        decryptedText.innerText = decrypted;
+        decryptedText.innerHTML = decrypted;
         successArea.classList.remove('hidden');
         successArea.scrollIntoView({ behavior: 'smooth' });
     }
