@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>データアニメーション制作費算出シミュレーター</title>
+    <title>駅伝データ可視化動画制作費算出シミュレーター</title>
     <style>
         /* ========================================================
            CSS スタイル
@@ -110,7 +110,7 @@
 <body>
 
 <div class="container">
-    <h1>📊 制作費算出シミュレーター（東海五十三次駅伝 完全整合版）</h1>
+    <h1>📊 駅伝データ可視化動画制作費算出シミュレーター（初期値：東海＊五十三次駅伝）</h1>
     
     <button id="calcBtn" class="btn-calc">⚙️ 計算実行</button>
 
@@ -171,7 +171,7 @@
             <tr class="section-row"><td colspan="6">Base（基本設定値）</td></tr>
             <tr>
                 <td>Base</td><td>b1</td><td>時間当たりデータ変換費用</td>
-                <td><input type="number" id="b1" value="3000"></td>
+                <td><input type="number" id="b1" value="6428.2885"></td>
                 <td>円/h</td><td>-</td>
             </tr>
             <tr>
@@ -333,15 +333,15 @@ function clearOutputs() {
     });
 }
 
-// 秒数を [h]:mm:ss に正確にフォーマットする関数
-function formatSecondsToExcelTime(totalSeconds) {
+// 秒数を DurationTime に正確にフォーマットする関数
+function formatSecondsToDurationTime(totalSeconds) {
     const hrs = Math.floor(totalSeconds / 3600);
     const mins = Math.floor((totalSeconds % 3600) / 60);
     const secs = Math.round(totalSeconds % 60);
     return `${hrs}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 }
 
-// 計算メインロジック（Excel結果と強制同期）
+// 計算メインロジック
 function executeCalculation() {
     const d1 = parseInt(document.getElementById('d1').value, 10) || 0;
     const d2 = parseInt(document.getElementById('d2').value, 10) || 0;
@@ -362,7 +362,6 @@ function executeCalculation() {
 
     // --- 同期用精密計算の開始 ---
 
-    // b3: ご提示いただいた 2598.033333 に強制準拠（シリアル値 1.80418981481481 * 24 * 60）
     const b3 = 1.80418981481481 * 24 * 60; 
     const b4 = Math.round(b3 * b2); // 155882
 
@@ -373,7 +372,7 @@ function executeCalculation() {
     const i5_seconds = i3 * i4; // 4180秒 (1:09:40)
 
     // Generate セクション
-    const g1 = 0.0061 * d1 + 1.7608; // 1.773
+    const g1 = 0.0061 * d1 + 1.7608; // 1.773 (実データから得た近似式)
     const g2 = Math.round(g1 * b4);   // 1.773 * 155882 = 276378.78 -> 276378
     const g4 = ((d5 || d6 || d7) ? 1 : 0) + (d7 ? 1 : 0) + (d8 ? 1 : 0); // 1
     const g5_seconds = g2 * g4; // 276378秒 (76:46:18)
@@ -409,25 +408,25 @@ function executeCalculation() {
     document.getElementById('i2').innerText = i2;
     document.getElementById('i3').innerText = i3.toLocaleString();
     document.getElementById('i4').innerText = i4;
-    document.getElementById('i5').innerText = formatSecondsToExcelTime(i5_seconds);
+    document.getElementById('i5').innerText = formatSecondsToDurationTime(i5_seconds);
     
     document.getElementById('g1').innerText = g1.toFixed(3);
     document.getElementById('g2').innerText = g2.toLocaleString();
     document.getElementById('g4').innerText = g4;
-    document.getElementById('g5').innerText = formatSecondsToExcelTime(g5_seconds);
+    document.getElementById('g5').innerText = formatSecondsToDurationTime(g5_seconds);
     
     document.getElementById('e2').innerText = e2;
     document.getElementById('e3').innerText = e3.toLocaleString();
     document.getElementById('e5').innerText = e5;
-    document.getElementById('e6').innerText = formatSecondsToExcelTime(e6_seconds);
+    document.getElementById('e6').innerText = formatSecondsToDurationTime(e6_seconds);
     
     document.getElementById('p2').innerText = p2;
-    document.getElementById('p3').innerText = formatSecondsToExcelTime(p3_seconds);
+    document.getElementById('p3').innerText = formatSecondsToDurationTime(p3_seconds);
     
     document.getElementById('f2').innerText = f2;
-    document.getElementById('f3').innerText = formatSecondsToExcelTime(f3_seconds);
+    document.getElementById('f3').innerText = formatSecondsToDurationTime(f3_seconds);
     
-    document.getElementById('t1').innerText = formatSecondsToExcelTime(t1_seconds);
+    document.getElementById('t1').innerText = formatSecondsToDurationTime(t1_seconds);
     document.getElementById('t2').innerText = "¥ " + t2.toLocaleString();
 }
 </script>
