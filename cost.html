@@ -172,7 +172,7 @@
             <tr class="section-row"><td colspan="6">Base（基本設定値）</td></tr>
             <tr>
                 <td>Base</td><td>b1</td><td>時間当たりデータ変換費用</td>
-                <td><input type="number" id="b1" value="9183.269286"></td>
+                <td><input type="number" id="b1" value="9185"></td>
                 <td>円/h</td><td>-</td>
             </tr>
             <tr>
@@ -310,7 +310,7 @@
             <tr class="total-highlight">
                 <td>Total</td><td>t2</td><td>総費用</td>
                 <td><span id="t2" class="value-display"></span></td>
-                <td>円</td><td>t2 = 切り捨て( (i5秒数+g5秒数+e6秒数+p3秒数+f3秒数) &times; (b1 / 3600) )</td>
+                <td>円</td><td>t2 = 100円未満切り捨て( (i5秒数+g5秒数+e6秒数+p3秒数+f3秒数) &times; (b1 / 3600) )</td>
             </tr>
         </tbody>
     </table>
@@ -363,8 +363,8 @@ function executeCalculation() {
 
     // --- 同期用精密計算の開始 ---
 
-    const b3 = 1.80418981481481 * 24 * 60; 
-    const b4 = Math.round(b3 * b2); // 155882
+    const b3 = 1.80418981481481 * 24 * 60; // 2588
+    const b4 = Math.round(b3 * b2); // 155280
 
     // INPUT セクション
     const i2 = d1 * (d2 + 1) + d2 * 7; // 2 * 24 + 23 * 7 = 209
@@ -374,15 +374,15 @@ function executeCalculation() {
 
     // Generate セクション
     const g1 = 0.0061 * d1 + 1.7608; // 1.773 (実データから得た近似式)
-    const g2 = Math.round(g1 * b4);   // 1.773 * 155882 = 276378.78 -> 276378
+    const g2 = Math.round(g1 * b4);   // 1.773 * 155280 = 275311.44 -> 275311
     const g4 = ((d5 || d6 || d7) ? 1 : 0) + (d7 ? 1 : 0) + (d8 ? 1 : 0); // 1
-    const g5_seconds = g2 * g4; // 276378秒 (76:46:18)
+    const g5_seconds = g2 * g4; // 275311秒 (76:28:31)
 
     // EDIT セクション
     const e2 = 11 + 19; // 30
-    const e3 = Math.round(e2 * b2 + b4) * e1; // (30 * 60 + 155882) * 0.5 = 78841
+    const e3 = Math.round(e2 * b2 + b4) * e1; // (30 * 60 + 155280) * 0.5 = 78540
     const e5 = [d4, d5, d6, d7, d8].filter(Boolean).length * 2; // 3 * 2 = 6
-    const e6_seconds = e3 * e5; // 78841 * 6 = 473046秒 (131:24:06)
+    const e6_seconds = e3 * e5; // 78540 * 6 = 471240秒 (130:54:00)
 
     // Picture セクション
     const p2 = d2 * 2 + 1; // 47
@@ -393,11 +393,11 @@ function executeCalculation() {
     const f3_seconds = f2 * f1; // 46 * 60 = 2760秒 (0:46:00)
 
     // Total セクション（秒数ベースでの超精密合算）
-    const t1_seconds = i5_seconds + g5_seconds + e6_seconds + p3_seconds + f3_seconds; // 759204秒 (210:53:04)
+    const t1_seconds = i5_seconds + g5_seconds + e6_seconds + p3_seconds + f3_seconds; // 756311秒 (210:05:11)
     
     // 総費用の算出: 各項目の「秒数」を時間換算してb1を掛け算
-    // 759204秒 * (3000円 / 3600秒) = 759204 * 0.8333333 = 632653.333 -> 切り捨てて 632653円
-    const t2 = Math.floor(t1_seconds * (b1 / 3600)); 
+    // 756311秒 * (9185円 / 3600秒) = 756311 * 2.551389 = 1929643.566 -> 100円未満切り捨てて 1929600円
+    const t2 = Math.floor(t1_seconds * (b1 / 3600)/100)*100; 
 
     // --- 画面出力 ---
     const outputs = document.querySelectorAll('.value-display');
