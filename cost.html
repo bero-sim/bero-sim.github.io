@@ -363,7 +363,11 @@ function executeCalculation() {
 
     // --- 同期用精密計算の開始 ---
 
-    const b3 = 1.80418981481481 * 24 * 60; // 2588
+    const value = document.getElementById("d3").value; // "43:08:00"
+    const [h, m, s] = value.split(":").map(Number);
+    const d3 = (h * 3600 + m * 60 + s) / 86400;
+
+    const b3 = d3 * 24 * 60; // 2588
     const b4 = Math.round(b3 * b2); // 155280
 
     // INPUT セクション
