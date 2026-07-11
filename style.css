@@ -1,0 +1,169 @@
+/* https://github.com/bero-sim/bero-sim.github.io/blob/main/style.css */
+/* 全体スタイル設定 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-color: #000000;
+    color: #ffffff;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+/* ナビゲーションバー */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #111111;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
+    border-bottom: 1px solid #222222;
+}
+
+/* ロゴエリア */
+.nav-logo {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.logo-img {
+    height: 35px;
+    width: auto;
+    margin-right: 10px;
+}
+.logo-text {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* PC用メニュー */
+.nav-menu {
+    display: flex;
+    height: 100%;
+}
+.menu-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+    height: 100%;
+    transition: background-color 0.2s;
+}
+.menu-item:hover {
+    background-color: #333333;
+}
+.menu-item.active {
+    color: #007bff; /* アクティブ時の青 */
+    font-weight: bold;
+}
+
+/* ドロップダウン（2階層目） */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    background-color: #111111;
+    min-width: 180px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
+    border: 1px solid #222222;
+}
+.dropdown-content .menu-item {
+    height: 45px;
+    width: 100%;
+}
+.menu-item:hover > .dropdown-content {
+    display: block; /* マウスオーバーで表示 */
+}
+
+/* ハンバーガーメニュー（初期状態は非表示） */
+.hamburger {
+    display: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background-color: #111111;
+    flex-direction: column;
+    border-bottom: 1px solid #222222;
+    z-index: 999;
+    max-height: calc(100vh - 60px); /* ★メニューの最大高さを画面いっぱい（ナビバー除く）に制限 */
+    overflow-y: auto;               /* ★メニューが画面に収まらない場合、メニュー内だけをスクロール可能に */
+}
+.mobile-menu .menu-item {
+    height: 50px;
+    width: 100%;
+    padding-left: 30px;
+}
+
+/* メインコンテンツエリア */
+.container {
+    margin-top: 60px; /* メニューに隠れないように */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ヘッダーバナー画像（比率固定・レスポンシブ） */
+.header-banner {
+    width: 100%;
+    max-width: 1200px; /* コンテンツの最大幅 */
+    padding: 10px;
+}
+.banner-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+}
+
+/* コンテンツ本体 */
+.content-body {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    text-align: center;
+}
+.coming-soon {
+    font-size: 1.5rem;
+    color: #aaaaaa;
+    margin-top: 50px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+/* Gist埋め込み表示の調整（黒背景に馴染ませる） */
+.gist {
+    text-align: left;
+    margin-top: 20px;
+}
+
+/* レスポンシブ設計（画面幅が狭い時） */
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none; /* PCメニューを隠す */
+    }
+    .hamburger {
+        display: block; /* ハンバーガー表示 */
+    }
+    .mobile-menu.open {
+        display: flex; /* 開閉制御 */
+    }
+}
