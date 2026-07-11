@@ -1,0 +1,39 @@
+<!-- https://github.com/bero-sim/bero-sim.github.io/blob/main/cwgkp.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>解答システム</title>
+    <link rel="stylesheet" href="cwgk.css">
+</head>
+<body class="player-body">
+    <div class="container">
+        <div id="maintenanceMode" class="maintenance-box hidden">
+            <h2>🔒 現在サービス停止中</h2>
+            <p>正しいアクセスキー（引数）が必要です。</p>
+        </div>
+
+        <div id="gameArea" class="hidden">
+            <h1 id="gameTypeTitle">🔑 解答ツール</h1>
+            <h2 id="quizTitle" class="quiz-title"></h2>
+
+            <div id="cwWrapper" class="hidden">
+                <div id="playGrid" class="grid-layout"></div>
+            </div>
+
+            <div id="gkWrapper" class="hidden">
+                <div class="input-group">
+                    <label>解答入力欄:</label>
+                    <input type="text" id="gkInput" class="gk-input" placeholder="ここに解答を入力">
+                </div>
+            </div>
+
+            <div id="successArea" class="success-box hidden">
+                <h2>⭕ 正解です</h2>
+                <div id="decryptedText" class="decrypted-content"></div>
+            </div>
+        </div>
+    </div>
+    <script src="cwgk.js"></script>
+</body>
+</html>
