@@ -1,0 +1,77 @@
+<!-- https://github.com/bero-sim/bero-sim.github.io/blob/main/pwd2.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>解凍用パスワード（後半）の取得</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; line-height: 1.6; }
+    .card { border: 1px solid #ccc; padding: 20px; border-radius: 8px; background: #f9f9f9; }
+    .alert { background: #fff3cd; border-left: 6px solid #ffecb5; padding: 12px; margin: 15px 0; color: #664d03; }
+    .btn { background: #0056b3; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 4px; cursor: pointer; }
+    .btn:disabled { background: #cccccc; cursor: not-allowed; }
+    .result { font-size: 20px; font-weight: bold; color: #155724; background: #d4edda; padding: 15px; border-radius: 4px; margin-top: 20px; word-break: break-all; }
+  </style>
+</head>
+<body>
+
+  <h2>🔑 解凍用パスワード（後半）の発行</h2>
+
+  <div class="card">
+    <div class="alert">
+      <strong>⚠️ セキュリティ監査に関するお知らせ</strong><br>
+      不正利用および無断流出の抑止のため、パスワード発行時に以下の接続情報を共有ログとして記録・通知します。<br>
+      ・IPアドレス<br>
+      　・IPv4の場合（第1・第2オクテットのみ: 例 133.203.*.*）<br>
+      　・IPv6の場合（第1セグメントのみ: 例 240b:*:*:*:*:*:*:*）<br>
+      ・接続プロバイダ情報（ISP）<br>
+      ・アクセス日時<br>
+      <small>※共有ログ通知先: <a href="https://discord.gg/QNkz9pwdF3" target="_blank">discord.gg/QNkz9pwdF3</a>（どなたでもメンバーになれます）</small>
+    </div>
+
+    <p>上記内容に同意し、共有ログの送信を行った上でパスワード（後半）を取得しますか？</p>
+
+    <button id="agreeBtn" class="btn" onclick="requestPassword()">同意してパスワード（後半）を取得（Y）</button>
+
+    <div id="statusMessage" style="margin-top: 15px; font-weight: bold;"></div>
+    <div id="resultContainer" class="result" style="display: none;"></div>
+  </div>
+
+  <script>
+    // 作成した Cloudflare Workers の URL をここに貼り付けます
+    const WORKER_URL = "https://password-audit-worker.tv-180.workers.dev/";
+
+    async function requestPassword() {
+      const btn = document.getElementById("agreeBtn");
+      const status = document.getElementById("statusMessage");
+      const result = document.getElementById("resultContainer");
+
+      btn.disabled = true;
+      status.innerText = "監査ログ送信および処理中...";
+      status.style.color = "#333";
+
+      try {
+        const response = await fetch(WORKER_URL, {
+          method: "POST"
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          status.innerText = "✅ 監査ログの送信が完了しました。";
+          status.style.color = "green";
+          result.style.display = "block";
+          result.innerHTML = `パスワード（後半）: <code>${data.password_part2}</code>`;
+        } else {
+          throw new Error(data.error || "処理に失敗しました。");
+        }
+      } catch (err) {
+        status.innerText = "❌ エラー: " + err.message;
+        status.style.color = "red";
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
