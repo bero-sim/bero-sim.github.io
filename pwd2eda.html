@@ -1,0 +1,113 @@
+<!-- https://github.com/bero-sim/bero-sim.github.io/blob/main/pwd2eda.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EDA解凍用パスワード(後半)の取得</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; line-height: 1.6; background-color: #000000; color: #ffffff; }
+    .card { border: 1px solid #ccc; padding: 20px; border-radius: 8px; background: #80350E; }
+    .alert { background: #fff3cd; border-left: 6px solid #ffecb5; padding: 12px; margin: 15px 0; color: #664d03; }
+    .btn { background: gold; color: black; border: none; padding: 10px 20px; font-size: 20px; border-radius: 4px; cursor: pointer; }
+    .btn:disabled { background: #cccccc; cursor: not-allowed; }
+    .result { font-size: 20px; font-weight: bold; color: #155724; background: #d4edda; padding: 15px; border-radius: 4px; margin-top: 20px; word-break: break-all; }
+    ul.no-marker { list-style: none; padding-left: 10px; }
+    ul.marker { padding-left: 15px; }
+    table, th, td { border: none; background-color: #242429; color: #f9f9f9; }
+    .highlight { background-color: #515DE0; color: #ffffff; padding: 0px 4px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+<h1>🔑 EDA解凍用パスワード(後半)の発行</h1>
+
+<div class="card">
+  <div class="alert">
+    <h2>⚠️ セキュリティ監査に関するお知らせ</h2>
+    <hr style="border: none; border-top: 1px dotted red;">
+  不正利用および無断流出の抑止のため、<b>パスワード発行時に以下の接続情報を共有ログとして記録・通知</b>します。<br>
+    <ul>
+      <li>アプリから送信する際の名前（Password Audit Bot）</li>
+      <li>アクセス日時（UTC）</li>
+      <li>IPアドレス</li>
+      <ul class="marker">
+        <li>IPv4の場合（第1・第2オクテットのみ: 例 133.203.*.*）</li>
+        <li>IPv6の場合（第1セグメントのみ: 例 240b:*:*:*:*:*:*:*）</li>
+      </ul>
+      <li>国名コード（例 JP）</li>
+      <li>接続プロバイダ情報（ISP）</li>
+    </ul>
+
+    <small style="display: block; margin-top: 7px; line-height: 1.1;">
+      ※通知例
+      <table>
+      <tr><td colspan="3">Password Audit Bot <small><span class="highlight">アプリ</span> <span title="2026年8月20日木曜日 11:25">2026/08/20 11:25</span></small></td></tr>
+      <tr><td rowspan="4" style="background-color: #ffa500; color: #ffa500;">.</td><td colspan="2"><b>🔑 EDAパスワード後半 発行監査ログ</b></td></tr>
+      <tr><td><small><b>日時 (UTC)</b><br>2026-08-20T02:25:53:739Z</small></td><td></td></tr>
+      <tr><td><small><b>IP アドレス</b><br>240b:*:*:*:*:*:*:* (JP)</small></td><td><small><b>ISP (プロバイダ)</b><br>Japan Internet Xing Co., Ltd. (AS2516)</small></td></tr>
+      <tr><td><small>Security Audit Log System</small></td><td></td></tr>
+      </table>
+    </small>
+    <small style="display: block; margin-top: 8px; line-height: 1.5;">
+      ※共有ログ通知先: <a href="https://discord.gg/QNkz9pwdF3" target="_blank">discord.gg/QNkz9pwdF3</a>
+      <ul class="no-marker">
+        <li>📌 <b>メンバーになって共有ログを見る方法</b>（Discordアカウント所有時）</li>
+        <ol>
+          <li> Discordにログイン</li>
+          <li> <a href="https://discord.gg/QNkz9pwdF3" target="_blank">discord.gg/QNkz9pwdF3</a> にアクセス</li>
+          <li> 「bero_simに招待されています」という招待画面になる</li>
+          <li> Discordサーバー名が「<span title="駅伝データアニメーションのパスワード取得の監査">eda-password-retrieval-audit</span>」であることを確認</li>
+          <li> 「招待を受ける」をクリック</li>
+        </ol>
+      </ul>
+    </small>
+  </div>
+
+  <p><b>上記内容に同意し、共有ログの送信を行った上でEDAパスワード(後半)を取得しますか？</b></p>
+
+  <button id="agreeBtn" class="btn" onclick="requestPassword()">同意してEDAパスワード(後半)を取得する</button>
+
+  <div id="statusMessage" style="margin-top: 15px; font-weight: bold;"></div>
+  <div id="resultContainer" class="result" style="display: none;"></div>
+</div>
+
+
+
+  <script>
+    // Cloudflare Workers
+    const WORKER_URL = "https://password-audit-worker.tv-180.workers.dev/";
+
+    async function requestPassword() {
+      const btn = document.getElementById("agreeBtn");
+      const status = document.getElementById("statusMessage");
+      const result = document.getElementById("resultContainer");
+
+      btn.disabled = true;
+      status.innerText = "監査ログ送信および処理中...";
+      status.style.color = "#333";
+
+      try {
+        const response = await fetch(WORKER_URL, {
+          method: "POST"
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          status.innerText = "✅ 監査ログの送信が完了しました。";
+          status.style.color = "green";
+          result.style.display = "block";
+          result.innerHTML = `EDAパスワード(後半) : <br><code>${data.password_part2}</code>`;
+        } else {
+          throw new Error(data.error || "処理に失敗しました。");
+        }
+      } catch (err) {
+        status.innerText = "❌ エラー: " + err.message;
+        status.style.color = "red";
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
