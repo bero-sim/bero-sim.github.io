@@ -1,10 +1,10 @@
-<!-- https://github.com/bero-sim/bero-sim.github.io/blob/main/pwd2eda.html -->
+<!-- https://github.com/bero-sim/bero-sim.github.io/blob/main/edapwdcd.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EDA解凍用パスワード(後半)の取得</title>
+  <title>EDAパスワードCDの取得</title>
   <style>
     body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; line-height: 1.6; background-color: #000000; color: #ffffff; }
     .card { border: 1px solid #ccc; padding: 20px; border-radius: 8px; background: #80350E; }
@@ -20,7 +20,7 @@
 </head>
 <body>
 
-<h1>🔑 EDA解凍用パスワード(後半)の発行</h1>
+<h1>🔑 EDAパスワードCDの発行</h1>
 
 <div class="card">
   <div class="alert">
@@ -43,7 +43,7 @@
       ※通知例
       <table>
       <tr><td colspan="3">Password Audit Bot <small><span class="highlight">アプリ</span> <span title="2026年8月20日木曜日 11:25">2026/08/20 11:25</span></small></td></tr>
-      <tr><td rowspan="4" style="background-color: #ffa500; color: #ffa500;">.</td><td colspan="2"><b>🔑 EDAパスワード後半 発行監査ログ</b></td></tr>
+      <tr><td rowspan="4" style="background-color: #ffa500; color: #ffa500;">.</td><td colspan="2"><b>🔑 EDAパスワードCD 発行監査ログ</b></td></tr>
       <tr><td><small><b>日時 (UTC)</b><br>2026-08-20T02:25:53:739Z</small></td><td></td></tr>
       <tr><td><small><b>IP アドレス</b><br>240b:*:*:*:*:*:*:* (JP)</small></td><td><small><b>ISP (プロバイダ)</b><br>Japan Internet Xing Co., Ltd. (AS2516)</small></td></tr>
       <tr><td><small>Security Audit Log System</small></td><td></td></tr>
@@ -64,9 +64,9 @@
     </small>
   </div>
 
-  <p><b>上記内容に同意し、共有ログの送信を行った上でEDAパスワード(後半)を取得しますか？</b></p>
+  <p><b>上記内容に同意し、共有ログの送信を行った上でEDAパスワードCDを取得しますか？</b></p>
 
-  <button id="agreeBtn" class="btn" onclick="requestPassword()">同意してEDAパスワード(後半)を取得する</button>
+  <button id="agreeBtn" class="btn" onclick="requestPassword()">同意してEDAパスワードCDを取得する</button>
 
   <div id="statusMessage" style="margin-top: 15px; font-weight: bold;"></div>
   <div id="resultContainer" class="result" style="display: none;"></div>
@@ -98,7 +98,7 @@
           status.innerText = "✅ 監査ログの送信が完了しました。";
           status.style.color = "green";
           result.style.display = "block";
-          result.innerHTML = `EDAパスワード(後半) : <br><code>${data.password_part2}</code>`;
+          result.innerHTML = `EDAパスワードCD : <code>${data.password_part2}</code>`;
         } else {
           throw new Error(data.error || "処理に失敗しました。");
         }
