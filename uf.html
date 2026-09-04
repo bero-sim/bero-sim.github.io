@@ -1,0 +1,68 @@
+<!-- https://github.com/bero-sim/bero-sim.github.io/blob/main/uf.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <script>
+        // 転送先URLの定義テーブル（キーワード, 転送先URL）
+        const redirectMap = {
+            "b1": "https://cir.nii.ac.jp/crid/1050569070669139328", // 東京奠都記念東海＊五十三次駅伝徒歩競走に関する研究
+            "ko": "https://www.kgrr.org/", // 関東学生陸上競技連盟
+            "hj": "https://www.hakone-ekiden.jp/", // 箱＊駅伝公式サイト
+            "yhe": "https://www.yomiuri.co.jp/hakone-ekiden/", // 読売新聞 箱＊駅伝特設ページ
+            "b2": "https://tkj.jp/book/?cd=02483301", // 宝島社 箱＊駅伝95年
+            "b3": "https://web.archive.org/web/20130117172721/http://sportsclick.jp/magazine/track-field/mook882/index.html", // ﾍﾞｰｽﾎﾞｰﾙﾏｶﾞｼﾞﾝ社 箱＊駅伝ｼﾘｰｽﾞ
+            "hc": "https://hkhekiden.com/", // hkhekiden.com
+            "gj": "https://gcy.jp/ehi/", // gcy.jp/ehi/
+            "hc1": "https://hkhekiden.com/taikai/oume/oume_1m.html", // hkhekiden.com/taikai/oume/oume_1m.html
+            "hc2": "https://hkhekiden.com/taikai/oume/oume_2m.html", // hkhekiden.com/taikai/oume/oume_2m.html
+            "joj": "https://www.jaaf.or.jp/", // 日本陸上競技連盟 jaaf.or.jp
+            "hic": "https://hiroshima-ekiden.com/", // hiroshima-ekiden.com
+            "gc": "https://genkimanman.com/", // genkimanman.com
+            "w1": "https://w.wiki/GaMc", // w.wiki/GaMc
+            "wej": "https://www.womens-ekiden.jp/", // womens-ekiden.jp
+            "w2": "https://w.wiki/GaMU", // w.wiki/GaMU
+            "jtj": "http://www.jita-trackfield.jp/", // 日本実業団陸上競技連合
+            "gjo": "https://gold.jaic.org/jaic", // gold.jaic.org/jaic
+            "tcj": "https://www.tbs.co.jp/ekiden/", // tbs.co.jp
+            "w3": "https://w.wiki/4Q25", // w.wiki/4Q25
+            "b4": "https://www.rikujyokyogi.co.jp/archives/659", // 日本実業団陸上競技連合50年史半世紀の足跡
+            "w4": "https://w.wiki/4Q28", // w.wiki/4Q28
+            "oej": "https://okukuma-ekiden.jp/", // okukum*-ekiden.jp
+            "ij": "https://www.iuau.jp/", // 日本学生陸上競技連合公式サイト
+            "ic": "https://www.ivyekiden.com/", // ivyekiden.com
+            "iej": "https://www.izumo-ekiden.jp/", // izum*-ekiden.jp
+            "w5": "https://w.wiki/HkZK", // w.wiki/HkZK
+            "kc": "https://kosen-k-ekiden.com/", // 西日本地区高等＊門学校陸上競技専門部の公式サイト
+            "kj": "https://kosen-rk.jp/", // 日本高＊陸上競技協会の公式サイト
+            "w6": "https://w.wiki/HkZQ", // w.wiki/HkZQ
+            "mj": "https://mainichi.jp/koukouekiden/", // 毎日新聞社高＊駅伝公式サイト
+            "uc": "https://ukekiden.com/", // u*ekiden.com
+            "bn": "https://www.batavierenrace.nl/" // https://www.bataviere*race.nl
+        };
+
+        // URLパラメータ(?s=xxx)を取得する関数
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        window.onload = function() {
+            const key = getQueryParam('s');
+            
+            if (key && redirectMap[key]) {
+                // location.replace を使うことで、履歴を上書きして「戻る」ボタンの無限ループを防ぎます
+                window.location.replace(redirectMap[key]);
+            } else {
+                // キーが存在しない、またはテーブルにない場合の処理
+                document.getElementById("message").innerText = "指定された転送先が見つかりませんでした。";
+            }
+        };
+    </script>
+</head>
+<body>
+    <p id="message">転送中...</p>
+</body>
+</html>
