@@ -1,0 +1,36 @@
+<!-- https://github.com/bero-sim/bero-sim.github.io/blob/main/uf2hexa.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <script>
+        // 転送先URLの定義テーブル（キーワード, 転送先URL）
+        const redirectMap = {
+            "Qs_001": "https://nft.hexanft.com/nft/issue/aYL5melA"
+        };
+
+        // URLパラメータ(?s=xxx)を取得する関数
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        window.onload = function() {
+            const key = getQueryParam('s');
+            
+            if (key && redirectMap[key]) {
+                // location.replace を使うことで、履歴を上書きして「戻る」ボタンの無限ループを防ぎます
+                window.location.replace(redirectMap[key]);
+            } else {
+                // キーが存在しない、またはテーブルにない場合の処理
+                document.getElementById("message").innerText = "指定された転送先が見つかりませんでした。";
+            }
+        };
+    </script>
+</head>
+<body>
+    <p id="message">転送中...</p>
+</body>
+</html>
