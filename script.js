@@ -72,7 +72,7 @@ const MENU_DATA = [
      { 
         name: "継承", url: null, // 親メニューで遷移なし
         children: [
-            { name: "双対ﾀｽｷﾘﾚｰ", url: "#section1", title: "双対タスキリレー" }, // 近日公開
+            { name: "駅伝を駅伝しよう", url: "https://note.com/bero_sim/n/n78e192e28dc9", title: "外部リレー" }, // 別タブ送り
             { name: "制作費", url: "https://bero-sim.github.io/cost.html", title: "外部URL" }, // 別タブ送り
         ]
     },
